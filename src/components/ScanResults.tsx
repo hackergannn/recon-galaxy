@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowUpDown, FolderOpen, Image, File, LogOut } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface ScanResult {
   name: string;
@@ -18,11 +19,11 @@ const ScanResults = () => {
   const [search, setSearch] = useState('');
   const { toast } = useToast();
   const { logout } = useAuth();
+  const isMobile = useIsMobile();
 
-  // This is where you'll fetch the actual results from your nginx server
   useEffect(() => {
     // Simulated data - replace with actual API call
-    const mockResults = [
+    const mockResults: ScanResult[] = [
       { name: 'example.com', type: 'folder', path: '/root/reconftw/Recon/example.com' },
       { name: 'screenshot.png', type: 'image', path: '/root/reconftw/Recon/example.com/screenshot.png' },
     ];
@@ -42,50 +43,58 @@ const ScanResults = () => {
     result.name.toLowerCase().includes(search.toLowerCase())
   );
 
-  const getIcon = (type: string) => {
+  const getIcon = (type: 'folder' | 'image' | 'file') => {
     switch (type) {
       case 'folder':
-        return <FolderOpen className="w-5 h-5" />;
+        return <FolderOpen className="w-4 h-4 md:w-5 md:h-5" />;
       case 'image':
-        return <Image className="w-5 h-5" />;
+        return <Image className="w-4 h-4 md:w-5 md:h-5" />;
       default:
-        return <File className="w-5 h-5" />;
+        return <File className="w-4 h-4 md:w-5 md:h-5" />;
     }
   };
 
   return (
-    <div className="min-h-screen bg-background p-6">
+    <div className="min-h-screen bg-background p-2 md:p-6">
       <div className="max-w-6xl mx-auto">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold">Recon Gan</h1>
-          <Button variant="ghost" onClick={logout}>
-            <LogOut className="w-5 h-5 mr-2" />
+        <div className="flex flex-col md:flex-row justify-between items-center mb-4 md:mb-6 gap-4">
+          <h1 className="text-2xl md:text-3xl font-bold">Recon Gan</h1>
+          <Button variant="ghost" onClick={logout} className="w-full md:w-auto">
+            <LogOut className="w-4 h-4 md:w-5 md:h-5 mr-2" />
             Logout
           </Button>
         </div>
         
-        <div className="flex gap-4 mb-6">
+        <div className="flex flex-col md:flex-row gap-2 md:gap-4 mb-4 md:mb-6">
           <Input
             placeholder="Search results..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="max-w-sm"
+            className="w-full md:max-w-sm"
           />
-          <Button onClick={handleSort}>
-            <ArrowUpDown className="w-5 h-5 mr-2" />
+          <Button onClick={handleSort} className="w-full md:w-auto">
+            <ArrowUpDown className="w-4 h-4 md:w-5 md:h-5 mr-2" />
             Sort {sortAsc ? 'Descending' : 'Ascending'}
           </Button>
         </div>
 
-        <div className="grid gap-4 animate-fadeIn">
+        <div className="grid gap-2 md:gap-4 animate-fadeIn">
           {filteredResults.map((result, index) => (
             <Card key={result.path} className="hover:bg-accent transition-colors">
-              <CardContent className="flex items-center p-4">
-                <span className="mr-4 text-muted-foreground">{index + 1}</span>
+              <CardContent className="flex items-center p-2 md:p-4">
+                <span className="mr-2 md:mr-4 text-sm md:text-base text-muted-foreground">
+                  {index + 1}
+                </span>
                 {getIcon(result.type)}
-                <span className="ml-4 flex-1">{result.name}</span>
+                <span className="ml-2 md:ml-4 flex-1 text-sm md:text-base truncate">
+                  {result.name}
+                </span>
                 {result.type === 'image' && (
-                  <Button variant="outline" onClick={() => window.open(result.path, '_blank')}>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => window.open(result.path, '_blank')}
+                    className="ml-2 text-sm"
+                  >
                     View
                   </Button>
                 )}
