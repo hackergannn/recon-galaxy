@@ -12,7 +12,7 @@ app.use(cors({
 }));
 
 // Serve static files from reconftw directory
-app.use('/reconftw', express.static('/root/reconftw/Recon'));
+app.use('/reconftw', express.static('/var/www/recon-galaxy/Recon'));
 
 // Function to scan directory and return file info
 const scanDirectory = (dirPath) => {
@@ -52,7 +52,7 @@ const scanDirectory = (dirPath) => {
 // API endpoint to get scan results
 app.get('/api/scan-results', (req, res) => {
   try {
-    const results = scanDirectory('/root/reconftw/Recon');
+    const results = scanDirectory('/var/www/recon-galaxy/Recon');
     res.json(results);
   } catch (error) {
     console.error('Error scanning directory:', error);
