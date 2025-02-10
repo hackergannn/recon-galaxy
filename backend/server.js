@@ -7,7 +7,7 @@ const app = express();
 
 // Enable CORS for your frontend domain
 app.use(cors({
-  origin: 'http://YOUR_FRONTEND_DOMAIN',
+  origin: '*',
   credentials: true
 }));
 
@@ -27,7 +27,7 @@ const scanDirectory = (dirPath) => {
       results.push({
         name: item,
         type: 'folder',
-        path: fullPath
+        path: fullPath.replace('/var/www/recon-galaxy/Recon', '')
       });
       
       // Scan files inside the folder
@@ -40,7 +40,7 @@ const scanDirectory = (dirPath) => {
         results.push({
           name: file,
           type: ext === '.png' || ext === '.jpg' || ext === '.jpeg' ? 'image' : 'file',
-          path: filePath
+          path: filePath.replace('/var/www/recon-galaxy/Recon', '')
         });
       });
     }

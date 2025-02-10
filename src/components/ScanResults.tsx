@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
@@ -13,6 +14,8 @@ interface ScanResult {
   path: string;
 }
 
+const API_URL = 'http://38.242.149.132:3001';
+
 const ScanResults = () => {
   const [results, setResults] = useState<ScanResult[]>([]);
   const [sortAsc, setSortAsc] = useState(true);
@@ -22,7 +25,7 @@ const ScanResults = () => {
   const isMobile = useIsMobile();
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/scan-results')
+    fetch(`${API_URL}/api/scan-results`)
       .then(response => response.json())
       .then(data => setResults(data))
       .catch(error => {
@@ -97,7 +100,7 @@ const ScanResults = () => {
                 {result.type === 'image' && (
                   <Button 
                     variant="outline" 
-                    onClick={() => window.open(result.path, '_blank')}
+                    onClick={() => window.open(`${API_URL}/reconftw${result.path}`, '_blank')}
                     className="ml-2 text-sm"
                   >
                     View
