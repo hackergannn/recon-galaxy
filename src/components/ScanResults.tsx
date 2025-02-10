@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
@@ -24,9 +25,35 @@ const ScanResults = () => {
   useEffect(() => {
     // Simulated data - replace with actual API call
     const mockResults: ScanResult[] = [
+      // Example of multiple domain scan folders
       { name: 'example.com', type: 'folder', path: '/root/reconftw/Recon/example.com' },
       { name: 'screenshot.png', type: 'image', path: '/root/reconftw/Recon/example.com/screenshot.png' },
+      { name: 'blibli.com', type: 'folder', path: '/root/reconftw/Recon/blibli.com' },
+      { name: 'screenshot.png', type: 'image', path: '/root/reconftw/Recon/blibli.com/screenshot.png' },
+      { name: 'subdomain.txt', type: 'file', path: '/root/reconftw/Recon/blibli.com/subdomain.txt' },
+      { name: 'google.com', type: 'folder', path: '/root/reconftw/Recon/google.com' },
+      { name: 'screenshot.png', type: 'image', path: '/root/reconftw/Recon/google.com/screenshot.png' },
+      { name: 'report.txt', type: 'file', path: '/root/reconftw/Recon/google.com/report.txt' },
+      { name: 'tokopedia.com', type: 'folder', path: '/root/reconftw/Recon/tokopedia.com' },
+      { name: 'screenshot.png', type: 'image', path: '/root/reconftw/Recon/tokopedia.com/screenshot.png' },
+      { name: 'vulnerabilities.txt', type: 'file', path: '/root/reconftw/Recon/tokopedia.com/vulnerabilities.txt' },
     ];
+
+    // In production, you would replace this with an API call to your backend
+    // The backend should read the directory contents of /root/reconftw/Recon/
+    // Example API call:
+    // fetch('/api/scan-results')
+    //   .then(response => response.json())
+    //   .then(data => setResults(data))
+    //   .catch(error => {
+    //     console.error('Error fetching scan results:', error);
+    //     toast({
+    //       title: "Error",
+    //       description: "Failed to load scan results",
+    //       variant: "destructive",
+    //     });
+    //   });
+
     setResults(mockResults);
   }, []);
 
